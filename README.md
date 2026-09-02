@@ -1,6 +1,6 @@
 # AK74
 
-> Software • Hardware • AI
+> Software • Hardware • AI.
 
 I'm AK74 — a developer building software, hardware projects,
 AI experiments, and things that probably didn't need to exist.
