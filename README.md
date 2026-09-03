@@ -2,16 +2,18 @@
 
 # AK74
 
-### Software • Hardware • AI
+### ⚡ Software • Hardware • AI
 
-<img src="https://miro.medium.com/1%2AZ_zLsvGbILa4IZA7MgPfRg.png" width="850">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:111827,100:000000&height=180&section=header&text=BUILD%20%E2%80%A2%20BREAK%20%E2%80%A2%20REBUILD&fontSize=28&fontColor=ffffff&animation=fadeIn&fontAlignY=55" width="100%">
 
-**Building software, hardware projects, AI experiments,  
-and things that probably didn't need to exist.**
+**Developer • Builder • Experimenter**
+
+Building software, hardware projects, AI experiments,
+and things that probably didn't need to exist.
 
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/not_ak74/)
 [![Website](https://img.shields.io/badge/Website-000000?style=for-the-badge&logo=google-chrome&logoColor=white)](https://ak74.qzz.io/)
-[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/not_ak74)
+[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/not_ak74/)
 [![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/users/1288360143104380942)
 
 </div>
