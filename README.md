@@ -94,18 +94,26 @@ Currently experimenting with:
 
 ## 🤖 AI / Building
 
-<img src="https://www.weight.gg/image/7528da6d675fd50e3a30b7f3de0a061b.jpg" width="500">
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=python,pytorch" />
+
+### SebAI
+
+Building and experimenting with AI systems from the ground up.
+
+</div>
 
 I'm interested in:
 
 - 🧠 Machine Learning
-- 🤖 AI models
+- 🤖 Language Models
 - 🐍 Python
-- 📊 Data
-- ⚙️ Systems
+- 📊 Data & Datasets
+- ⚙️ Model Training
 - 🧩 Algorithms
 
----
+> **Train. Test. Break. Repeat.**
 
 ## 📊 GitHub
 
