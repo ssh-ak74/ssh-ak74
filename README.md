@@ -80,7 +80,6 @@ Microcontrollers, sensors, displays, electronics and questionable ideas.
 | 🛠️ **MEGA Toolkit** | Developer utilities |
 | 🎨 **Color Tool** | Color manipulation utility |
 | 🧰 **Dev Toolkit** | Developer tools |
-| 📚 **StudentOS** | Offline smart learning device |
 
 ---
 
