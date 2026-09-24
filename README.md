@@ -74,13 +74,14 @@ Microcontrollers, sensors, displays, electronics and questionable ideas.
 
 ## 🚀 Projects
 
-| Project | Description |
-|:---:|---|
-| 🤖 **SebAI** | AI / model experiments |
-| 🛠️ **MEGA Toolkit** | Developer utilities |
-| 🎨 **Color Tool** | Color manipulation utility |
-| 🧰 **Dev Toolkit** | Developer tools |
+|                                Project                                | Description                                                     |
+| :-------------------------------------------------------------------: | --------------------------------------------------------------- |
+|           🤖 **[SebAI](https://github.com/ssh-ak74/SebAI)**           | Building and experimenting with my own language model           |
+|     📡 **[ESP32 Radar](https://github.com/ssh-ak74/esp-32-radar)**    | ESP32 distance-sensing project with a web-based radar interface |
+| 🔌 **[ESP32 LED Thing](https://github.com/ssh-ak74/esp32-led-thing)** | ESP32 + LED electronics experiments                             |
 
+> More projects are being built.
+> 
 ---
 
 ## 🔌 Hardware Stuff
