@@ -12,27 +12,6 @@ Building software, experimenting with hardware, and training AI systems.
 
 ---
 
-## Currently
-
-* 🤖 **SebAI** — experimenting with language models from the ground up
-* 🔌 **ESP32** — electronics, sensors, displays, and embedded projects
-* 💻 **Software** — building lightweight tools, applications, and web projects
-
----
-
-## Projects
-
-| Project                                                                      | What it is                                       |
-| ---------------------------------------------------------------------------- | ------------------------------------------------ |
-| [SebAI](https://github.com/ssh-ak74/SebAI)                                   | Experimental language model built from scratch   |
-| [ESP32 Radar](https://github.com/ssh-ak74/esp-32-radar)                      | Distance sensor with a live web radar interface  |
-| [IR Proximity Indicator](https://github.com/ssh-ak74/ir-proximity-indicator) | IR-based proximity detection with LED indicators |
-| [ESP32 LED Sequence](https://github.com/ssh-ak74/esp32-led-sequence)         | Programmable LED sequence using ESP32            |
-| [Toggle LED](https://github.com/ssh-ak74/toggle-led)                         | Button-controlled LED toggle                     |
-| [LED Blink](https://github.com/ssh-ak74/led-blink)                           | Simple ESP32 LED experiment                      |
-
----
-
 ## Stack
 
 ### Languages
