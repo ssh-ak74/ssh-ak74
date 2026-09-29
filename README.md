@@ -16,35 +16,35 @@ Building software, experimenting with hardware, and training AI systems.
 
 ### Languages
 
-![Python](https://img.shields.io/badge/Python-111827?style=flat-square\&logo=python\&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-111827?style=flat-square\&logo=javascript\&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-111827?style=flat-square\&logo=typescript\&logoColor=white)
-![C++](https://img.shields.io/badge/C%2B%2B-111827?style=flat-square\&logo=c%2B%2B\&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-111827?style=flat-square\&logo=csharp\&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP-111827?style=flat-square\&logo=php\&logoColor=white)
-![Lua](https://img.shields.io/badge/Lua-111827?style=flat-square\&logo=lua\&logoColor=white)
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=python,js,ts,cpp,cs,php,lua&theme=dark" />
+</p>
 
 ### Web
 
-![HTML5](https://img.shields.io/badge/HTML5-111827?style=flat-square\&logo=html5\&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-111827?style=flat-square\&logo=css3\&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-111827?style=flat-square\&logo=tailwindcss\&logoColor=white)
-![React](https://img.shields.io/badge/React-111827?style=flat-square\&logo=react\&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-111827?style=flat-square\&logo=next.js\&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-111827?style=flat-square\&logo=node.js\&logoColor=white)
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=html,css,tailwind,react,nextjs,nodejs&theme=dark" />
+</p>
 
 ### AI / ML
 
-![PyTorch](https://img.shields.io/badge/PyTorch-111827?style=flat-square\&logo=pytorch\&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-111827?style=flat-square\&logo=numpy\&logoColor=white)
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=pytorch,numpy&theme=dark" />
+</p>
 
 ### Hardware
 
-`ESP32` · `Arduino` · `GPIO` · `I²C` · `SPI` · `OLED` · `Sensors`
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=arduino,raspberrypi&theme=dark" />
+</p>
+
+`ESP32` · `GPIO` · `I²C` · `SPI` · `OLED` · `Sensors`
 
 ### Tools
 
-`Git` · `GitHub` · `Linux` · `VS Code` · `MySQL`
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=git,github,linux,vscode,mysql&theme=dark" />
+</p>
 
 ---
 
