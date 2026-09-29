@@ -2,7 +2,7 @@
 
 # AK74
 
-**Software • Hardware • AI**
+**Software · Hardware · AI**
 
 Building software, experimenting with hardware, and training AI systems.
 
@@ -37,7 +37,6 @@ Building software, experimenting with hardware, and training AI systems.
 
 ![PyTorch](https://img.shields.io/badge/PyTorch-111827?style=flat-square\&logo=pytorch\&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-111827?style=flat-square\&logo=numpy\&logoColor=white)
-![Python](https://img.shields.io/badge/ML%20%2F%20Data-111827?style=flat-square\&logo=python\&logoColor=white)
 
 ### Hardware
 
@@ -55,7 +54,7 @@ Building software, experimenting with hardware, and training AI systems.
 
 <img src="https://github-readme-stats.vercel.app/api?username=ssh-ak74&show_icons=true&theme=github_dark&hide_border=true&bg_color=00000000" height="160">
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&theme=github_dark&hide_border=true&bg_color=00000000" height="160">
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000" height="160">
 
 </div>
 
@@ -67,22 +66,17 @@ Building software, experimenting with hardware, and training AI systems.
 
 ---
 
-## Focus
+## What I'm Building
 
-```text
-Software        ████████████████████
-AI / ML         ████████████████
-Hardware        ██████████████
-Web             ███████████████
-Systems         ███████████
-```
+* **AI** — Training and experimenting with models from scratch
+* **Software** — Developer tools, applications, and experiments
+* **Hardware** — ESP32 projects, sensors, displays, and embedded systems
+* **Web** — Full-stack applications and interfaces
 
 ---
 
 <div align="center">
 
-```text
-AK74 // BUILD • BREAK • REBUILD
-```
+`AK74 // BUILD • BREAK • REBUILD`
 
 </div>
