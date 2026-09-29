@@ -4,7 +4,7 @@
 
 **Software · Hardware · AI**
 
-Building software, experimenting with hardware, and training AI systems.
+building software, experimenting with hardware, and training AI systems. just having fun :>
 
 [Website](https://ak74.qzz.io) · [X](https://x.com/not_ak74) · [Instagram](https://www.instagram.com/not_ak74/) · [Discord](https://discord.com/users/1288360143104380942)
 
