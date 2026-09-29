@@ -53,12 +53,11 @@ Building software, experimenting with hardware, and training AI systems.
 ### Top Languages
 
 <div align="center">
-
-<img
-  src="https://github-readme-stats-git-masterrstaa-rickstaa.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000"
-  height="180"
-/>
-
+  <img
+    src="https://github-readme-stats-fast.vercel.app/api/top-langs/?username=ssh-ak74&layout=donut&theme=transparent&hide_border=true&langs_count=8&border_radius=20&title_color=ffffff&text_color=C9D1D9&bg_color=00000000"
+    height="200"
+    alt="Top Languages"
+  />
 </div>
 
 ### Statistics
