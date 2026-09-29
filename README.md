@@ -50,19 +50,24 @@ Building software, experimenting with hardware, and training AI systems.
 
 ## GitHub
 
-<div align="center">
-
-<img src="https://github-readme-stats.vercel.app/api?username=ssh-ak74&show_icons=true&theme=github_dark&hide_border=true&bg_color=00000000" height="160">
-
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000" height="160">
-
-</div>
+### Top Languages
 
 <div align="center">
 
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=ssh-ak74&theme=github-dark-blue&hide_border=true&background=00000000">
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000" height="180">
 
 </div>
+
+### Statistics
+
+<div align="center">
+
+<img src="https://github-readme-stats.vercel.app/api?username=ssh-ak74&show_icons=true&theme=github_dark&hide_border=true&bg_color=00000000" height="180">
+
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=ssh-ak74&theme=github-dark-blue&hide_border=true&background=00000000" height="180">
+
+</div>
+
 
 ---
 
