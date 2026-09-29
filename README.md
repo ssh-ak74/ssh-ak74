@@ -54,7 +54,10 @@ Building software, experimenting with hardware, and training AI systems.
 
 <div align="center">
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000" height="180">
+<img
+  src="https://github-readme-stats-git-masterrstaa-rickstaa.vercel.app/api/top-langs/?username=ssh-ak74&layout=compact&langs_count=8&theme=github_dark&hide_border=true&bg_color=00000000"
+  height="180"
+/>
 
 </div>
 
