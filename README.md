@@ -1,6 +1,7 @@
 <div align="center">
 
 # AK74
+*or MD. Jarif Hossain but yall can still call me AK74*
 
 **Software · Hardware · AI**
 
