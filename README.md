@@ -1,7 +1,8 @@
 <div align="center">
 
 # AK74
-*or MD. Jarif Hossain but yall can still call me AK74*
+
+*or MD. Jarif Hossain — but y'all can still call me AK74*
 
 **Software · Hardware · AI**
 
@@ -44,7 +45,13 @@ building software, experimenting with hardware, and training AI systems. just ha
 ### Tools
 
 <p align="left">
-  <img src="https://skillicons.dev/icons?i=git,github,linux,vscode,mysql&theme=dark" />
+  <img src="https://skillicons.dev/icons?i=git,github,linux,vscode&theme=dark" />
+</p>
+
+### Database
+
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=mysql&theme=dark" />
 </p>
 
 ---
