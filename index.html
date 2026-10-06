@@ -1,1083 +1,1853 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AK74</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AK74 — Software · Embedded · Hardware</title>
+
+<meta name="description" content="AK74 — MD. Jarif Hossain. Building software, embedded systems, digital hardware and AI systems from scratch.">
+<meta name="theme-color" content="#010102">
+
+<meta property="og:title" content="AK74 — Software · Embedded · Hardware">
+<meta property="og:description" content="Building a RISC-V processor, ESP32 projects and AI systems from scratch.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ak74.qzz.io">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css">
-<script src="./script.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#5e6ad2;
+  --primary-h:#828fff;
+  --primary-f:#5e69d1;
+  --ink:#f7f8f8;
+  --muted:#d0d6e0;
+  --subtle:#8a8f98;
+  --tert:#62666d;
+  --canvas:#010102;
+  --s1:#0f1011;
+  --s2:#141516;
+  --s3:#18191a;
+  --line:#23252a;
+  --line2:#34343a;
+  --ok:#27a644;
+  --danger:#f87171;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+}
+
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:72px;
+}
+
+body{
+  background:var(--canvas);
+  color:var(--ink);
+  font:16px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  letter-spacing:-.05px;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+a.ln{
+  color:var(--primary-h);
+}
+
+a.ln:hover{
+  text-decoration:underline;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+  outline:2px solid #5e69d180;
+  outline-offset:2px;
+}
+
+.wrap{
+  max-width:1120px;
+  margin:auto;
+  padding:0 24px;
+}
+
+section{
+  padding:96px 0;
+}
+
+.eyebrow{
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:.4px;
+  color:var(--subtle);
+  text-transform:uppercase;
+}
+
+h2{
+  font-size:clamp(28px,4vw,40px);
+  font-weight:600;
+  line-height:1.15;
+  letter-spacing:-1px;
+  margin:8px 0 12px;
+}
+
+.sub{
+  color:var(--subtle);
+  max-width:560px;
+  margin-bottom:40px;
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:var(--canvas);
+  border-bottom:1px solid var(--line);
+}
+
+nav .wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:56px;
+}
+
+.logo{
+  font-weight:600;
+  letter-spacing:-.4px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.logo i{
+  width:16px;
+  height:16px;
+  border-radius:4px;
+  background:var(--primary);
+}
+
+.links{
+  display:flex;
+  gap:24px;
+  font-size:14px;
+  color:var(--subtle);
+}
+
+.links a:hover{
+  color:var(--ink);
+}
+
+#burger{
+  display:none;
+  background:var(--s1);
+  border:1px solid var(--line);
+  color:var(--ink);
+  border-radius:8px;
+  height:40px;
+  padding:0 14px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:40px;
+  padding:8px 14px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  background:var(--s1);
+  color:var(--ink);
+  font:500 14px/1.2 Inter,sans-serif;
+  cursor:pointer;
+  transition:background .15s,border-color .15s;
+}
+
+.btn:hover{
+  background:var(--s3);
+  border-color:var(--line2);
+}
+
+.btn.p{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:#fff;
+}
+
+.btn.p:hover{
+  background:var(--primary-h);
+  border-color:var(--primary-h);
+}
+
+.btn.p:active{
+  background:var(--primary-f);
+}
+
+.btn[aria-disabled="true"]{
+  opacity:.45;
+  pointer-events:none;
+}
+
+.btns{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.hero{
+  padding:120px 0 80px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--line);
+  padding:2px 10px;
+  border-radius:9999px;
+}
+
+.dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--ok);
+}
+
+h1{
+  font-size:clamp(40px,8vw,80px);
+  font-weight:600;
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin:24px 0;
+}
+
+h1 span{
+  color:var(--subtle);
+}
+
+.hero p{
+  max-width:650px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.5;
+  margin-bottom:32px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1px;
+  margin-top:80px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.stat{
+  background:var(--s1);
+  padding:24px;
+}
+
+.stat b{
+  display:block;
+  font-size:28px;
+  font-weight:600;
+  letter-spacing:-.6px;
+}
+
+.stat span{
+  color:var(--subtle);
+  font-size:14px;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+}
+
+.card{
+  background:var(--s1);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  box-shadow:inset 0 1px 0 #ffffff0a;
+  transition:background .2s,border-color .2s;
+}
+
+.card:hover{
+  background:var(--s2);
+  border-color:var(--line2);
+}
+
+.card.f{
+  background:var(--s2);
+  border-color:var(--line2);
+}
+
+.card h3{
+  font-size:22px;
+  font-weight:500;
+  letter-spacing:-.4px;
+  line-height:1.25;
+}
+
+.card p{
+  color:var(--subtle);
+  font-size:14px;
+  flex:1;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  font-size:12px;
+  color:var(--tert);
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+
+.st{
+  font-size:12px;
+  text-transform:none;
+  letter-spacing:0;
+  background:var(--s2);
+  color:var(--muted);
+  padding:2px 8px;
+  border-radius:9999px;
+  border:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.st.ok{
+  color:var(--ok);
+}
+
+.chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.chips span{
+  font:12px var(--mono);
+  background:var(--s3);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:2px 8px;
+  color:var(--muted);
+}
+
+.feat{
+  grid-column:1/-1;
+}
+
+.about{
+  display:grid;
+  gap:48px;
+  grid-template-columns:1.2fr 1fr;
+  align-items:start;
+}
+
+.about p{
+  color:var(--subtle);
+  margin-bottom:16px;
+}
+
+.term{
+  background:var(--s1);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:24px;
+  font:13px/1.9 var(--mono);
+  color:var(--subtle);
+  box-shadow:inset 0 1px 0 #ffffff0a;
+  overflow:auto;
+}
+
+.term i{
+  color:var(--primary-h);
+  font-style:normal;
+}
+
+.term em{
+  color:var(--ink);
+  font-style:normal;
+}
+
+.tl{
+  border-left:1px solid var(--line);
+  padding-left:32px;
+  display:grid;
+  gap:32px;
+}
+
+.tl div{
+  position:relative;
+}
+
+.tl div:before{
+  content:"";
+  position:absolute;
+  left:-36px;
+  top:7px;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--canvas);
+  border:2px solid var(--line2);
+}
+
+.tl div:first-child:before{
+  border-color:var(--primary);
+}
+
+.tl small{
+  font-size:12px;
+  letter-spacing:.4px;
+  color:var(--tert);
+  text-transform:uppercase;
+}
+
+.tl h3{
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:-.2px;
+}
+
+.tl p{
+  color:var(--subtle);
+  font-size:14px;
+}
+
+.pay{
+  display:grid;
+  gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+
+.ic{
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  background:var(--s3);
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  font:500 12px var(--mono);
+  color:var(--muted);
+}
+
+.wal{
+  display:grid;
+  gap:8px;
+  grid-column:1/-1;
+}
+
+.wr{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:var(--canvas);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px 14px;
+}
+
+.wr b{
+  font-weight:500;
+  min-width:84px;
+  font-size:14px;
+}
+
+.wr small{
+  color:var(--tert);
+  display:block;
+  font-size:12px;
+  font-weight:400;
+}
+
+.wr code{
+  flex:1;
+  font:13px var(--mono);
+  color:var(--muted);
+  word-break:break-all;
+}
+
+.note{
+  color:var(--tert);
+  font-size:12px;
+  margin-top:16px;
+}
+
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-bottom:16px;
+}
+
+.tabs button{
+  background:var(--canvas);
+  border:0;
+  color:var(--subtle);
+  min-height:36px;
+  padding:6px 14px;
+  border-radius:9999px;
+  cursor:pointer;
+  font:500 14px Inter,sans-serif;
+}
+
+.tabs button.on{
+  background:var(--s2);
+  color:var(--ink);
+}
+
+.tool{
+  display:none;
+}
+
+.tool.on{
+  display:block;
+}
+
+textarea,
+input[type="text"]{
+  width:100%;
+  background:var(--s1);
+  border:1px solid var(--line);
+  border-radius:8px;
+  color:var(--ink);
+  padding:8px 12px;
+  min-height:44px;
+  font:13px var(--mono);
+  outline:none;
+}
+
+textarea:focus,
+input:focus{
+  outline:2px solid #5e69d180;
+  outline-offset:0;
+  border-color:var(--primary-f);
+}
+
+textarea{
+  min-height:140px;
+  resize:vertical;
+}
+
+input[type="color"]{
+  width:44px;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--s1);
+  padding:4px;
+}
+
+.row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:12px 0;
+}
+
+.out{
+  font:13px/1.6 var(--mono);
+  color:var(--muted);
+  word-break:break-all;
+  white-space:pre-wrap;
+  min-height:24px;
+}
+
+.out.err{
+  color:var(--danger);
+}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:48px 0;
+  color:var(--subtle);
+  font-size:12px;
+}
+
+footer .wrap{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.rv{
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .5s,transform .5s;
+}
+
+.rv.in{
+  opacity:1;
+  transform:none;
+}
+
+#toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translate(-50%,80px);
+  background:var(--ink);
+  color:#000;
+  padding:8px 14px;
+  border-radius:8px;
+  font-weight:500;
+  font-size:14px;
+  transition:transform .25s;
+  pointer-events:none;
+  z-index:50;
+}
+
+#toast.show{
+  transform:translate(-50%,0);
+}
+
+@media(max-width:768px){
+  .links{
+    display:none;
+    position:absolute;
+    top:56px;
+    left:0;
+    right:0;
+    flex-direction:column;
+    gap:16px;
+    background:var(--canvas);
+    padding:16px 24px;
+    border-bottom:1px solid var(--line);
+  }
+
+  .links.open{
+    display:flex;
+  }
+
+  #burger{
+    display:block;
+  }
+
+  .about{
+    grid-template-columns:1fr;
+  }
+
+  section{
+    padding:64px 0;
+  }
+
+  .hero{
+    padding:72px 0 48px;
+  }
+
+  h1{
+    letter-spacing:-1.5px;
+  }
+
+  .hero p{
+    font-size:17px;
+  }
+
+  .wr{
+    flex-wrap:wrap;
+  }
+
+  .wr code{
+    width:100%;
+    flex-basis:100%;
+    order:3;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    transition:none!important;
+    animation:none!important;
+  }
+
+  html{
+    scroll-behavior:auto;
+  }
+
+  .rv{
+    opacity:1;
+    transform:none;
+  }
+}
+</style>
 </head>
 
 <body>
-<div id="bg-video-wrap">
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="bg-vid.mp4" type="video/mp4">
-  </video>
-</div>
-<div class="bg-overlay"></div>
 
-<div class="toast" id="toast">Copied!</div>
+<nav aria-label="Primary navigation">
+  <div class="wrap">
 
-<div class="order-modal-overlay" id="orderModal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="order-modal">
-    <h3>Ready to Order?</h3>
-    <p>Drop by the Discord server and send your order details. I'll get back to you fast twin.</p>
-    <a class="discord-link-btn" href="https://discord.gg/BM2c8wqPsE" target="_blank" rel="noopener noreferrer">
-      <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M104,140a12,12,0,1,1-12-12A12,12,0,0,1,104,140Zm60-12a12,12,0,1,0,12,12A12,12,0,0,0,164,128Zm74.45,64.9-67,29.71a16.17,16.17,0,0,1-21.71-9.1l-8.11-22q-6.72.45-13.63.46t-13.63-.46l-8.11,22a16.18,16.18,0,0,1-21.71,9.1l-67-29.71a15.93,15.93,0,0,1-9.06-18.51L38,58A16.07,16.07,0,0,1,51,46.14l36.06-5.93a16.22,16.22,0,0,1,18.26,11.88l3.26,12.84Q118.11,64,128,64t19.4.93l3.26-12.84a16.21,16.21,0,0,1,18.26-11.88L205,46.14A16.07,16.07,0,0,1,218,58l29.53,116.38A15.93,15.93,0,0,1,238.45,192.9ZM232,178.28,202.47,62s0,0-.08,0L166.33,56a.17.17,0,0,0-.17,0l-2.83,11.14c5,.94,10,2.06,14.83,3.42A8,8,0,0,1,176,86.31a8.09,8.09,0,0,1-2.16-.3A172.25,172.25,0,0,0,128,80a172.25,172.25,0,0,0-45.84,6,8,8,0,1,1-4.32-15.4c4.82-1.36,9.78-2.48,14.82-3.42L89.83,56s0,0-.12,0h0L53.61,61.93a.17.17,0,0,0-.09,0L24,178.33,91,208a.23.23,0,0,0,.22,0L98,189.72a173.2,173.2,0,0,1-20.14-4.32A8,8,0,0,1,82.16,170,171.85,171.85,0,0,0,128,176a171.85,171.85,0,0,0,45.84-6,8,8,0,0,1,4.32,15.41A173.2,173.2,0,0,1,158,189.72L164.75,208a.22.22,0,0,0,.21,0Z"/></svg>
-      Join Discord Server
+    <a class="logo" href="#top" aria-label="AK74 home">
+      <i aria-hidden="true"></i>
+      AK74
     </a>
-    <button class="order-modal-close" onclick="document.getElementById('orderModal').classList.remove('open')">Close</button>
-  </div>
-</div>
 
-<div id="enter-screen">
-  <canvas id="enter-canvas"></canvas>
-  <div class="enter-content">
-    <div>
-      <div class="enter-logo">AK74</div>
-      <div class="enter-label" style="margin-top:0.75rem">Developer · Asia</div>
-    </div>
-    <div class="enter-hint">
-      <div class="enter-hint-dot"></div>
-      click to enter
-    </div>
-  </div>
-</div>
-
-<div id="main">
-
-  <nav class="navbar">
-    <div class="nav-logo">AK74</div>
-    <div class="nav-links">
-      <a href="#skills">Skills</a>
+    <div class="links" id="links">
+      <a href="#about">About</a>
       <a href="#projects">Projects</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#skills">Stack</a>
+      <a href="#journey">Journey</a>
+      <a href="#donate" id="navDonate">Donate</a>
       <a href="#tools">Tools</a>
+      <a href="#contact">Contact</a>
     </div>
-    <a href="https://discord.com/users/1288360143104380942" target="_blank" class="nav-cart">
-      <svg viewBox="0 0 256 256" fill="currentColor"><path d="M104,140a12,12,0,1,1-12-12A12,12,0,0,1,104,140Zm60-12a12,12,0,1,0,12,12A12,12,0,0,0,164,128Zm74.45,64.9-67,29.71a16.17,16.17,0,0,1-21.71-9.1l-8.11-22q-6.72.45-13.63.46t-13.63-.46l-8.11,22a16.18,16.18,0,0,1-21.71,9.1l-67-29.71a15.93,15.93,0,0,1-9.06-18.51L38,58A16.07,16.07,0,0,1,51,46.14l36.06-5.93a16.22,16.22,0,0,1,18.26,11.88l3.26,12.84Q118.11,64,128,64t19.4.93l3.26-12.84a16.21,16.21,0,0,1,18.26-11.88L205,46.14A16.07,16.07,0,0,1,218,58l29.53,116.38A15.93,15.93,0,0,1,238.45,192.9ZM232,178.28,202.47,62s0,0-.08,0L166.33,56a.17.17,0,0,0-.17,0l-2.83,11.14c5,.94,10,2.06,14.83,3.42A8,8,0,0,1,176,86.31a8.09,8.09,0,0,1-2.16-.3A172.25,172.25,0,0,0,128,80a172.25,172.25,0,0,0-45.84,6,8,8,0,1,1-4.32-15.4c4.82-1.36,9.78-2.48,14.82-3.42L89.83,56s0,0-.12,0h0L53.61,61.93a.17.17,0,0,0-.09,0L24,178.33,91,208a.23.23,0,0,0,.22,0L98,189.72a173.2,173.2,0,0,1-20.14-4.32A8,8,0,0,1,82.16,170,171.85,171.85,0,0,0,128,176a171.85,171.85,0,0,0,45.84-6,8,8,0,0,1,4.32,15.41A173.2,173.2,0,0,1,158,189.72L164.75,208a.22.22,0,0,0,.21,0Z"/></svg>
-    </a>
-  </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-inner">
+    <button
+      id="burger"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="links">
+      Menu
+    </button>
 
-        <div class="hero-left">
-          <div class="hero-eyebrow">
-            <div class="hero-eyebrow-dot"></div>
-            AK74 — Developer &amp; Builder
-          </div>
-          <h1 class="hero-name">
-            <span class="hero-name-line">BUILD.</span>
-            <span class="hero-name-line">DEPLOY.</span>
-          </h1>
-          <p class="hero-desc">
-            hi im AK74. website / software / bot / AI developer. Located in Asia. i like programming stuff aand learning new things>.
-          </p>
-          <div class="hero-links">
-            <a href="https://github.com/not-ak74" target="_blank" rel="noopener noreferrer" class="social-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-              <span>GitHub</span>
-            </a>
-            <a href="https://www.instagram.com/not_ak74/" target="_blank" rel="noopener noreferrer" class="social-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-              <span>Instagram</span>
-            </a>
-            <a href="https://discord.com/users/1288360143104380942" target="_blank" rel="noopener noreferrer" class="social-btn">
-              <svg viewBox="0 0 256 256" fill="currentColor" style="width:1.1rem;height:1.1rem"><path d="M104,140a12,12,0,1,1-12-12A12,12,0,0,1,104,140Zm60-12a12,12,0,1,0,12,12A12,12,0,0,0,164,128Zm74.45,64.9-67,29.71a16.17,16.17,0,0,1-21.71-9.1l-8.11-22q-6.72.45-13.63.46t-13.63-.46l-8.11,22a16.18,16.18,0,0,1-21.71,9.1l-67-29.71a15.93,15.93,0,0,1-9.06-18.51L38,58A16.07,16.07,0,0,1,51,46.14l36.06-5.93a16.22,16.22,0,0,1,18.26,11.88l3.26,12.84Q118.11,64,128,64t19.4.93l3.26-12.84a16.21,16.21,0,0,1,18.26-11.88L205,46.14A16.07,16.07,0,0,1,218,58l29.53,116.38A15.93,15.93,0,0,1,238.45,192.9Z"/></svg>
-              <span>Discord</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="hero-right">
-          <div class="glass hero-stat-card">
-            <div class="hero-stat-avatars">
-              <div class="hero-avatar">A</div>
-              <div class="hero-avatar">K</div>
-              <div class="hero-avatar">74</div>
-            </div>
-            <div class="hero-stat-num">20+</div>
-            <div class="hero-stat-desc">Clients trusting custom built software &amp; bots</div>
-            <div class="hero-trusted-badge">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              Verified Developer
-            </div>
-          </div>
-          <div class="glass hero-cta-card">
-            <div class="hero-cta-title">Ready to build?</div>
-            <div class="hero-cta-sub">Got a project idea? Let's ship it. Discord is the fastest way to reach me.</div>
-            <button class="cta-btn" onclick="document.getElementById('orderModal').classList.add('open')">
-              Make an order
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span class="marquee-item"><span>Discord Bots</span></span>
-      <span class="marquee-item">Web Development</span>
-      <span class="marquee-item"><span>Python Scripts</span></span>
-      <span class="marquee-item">C# / WPF Apps</span>
-      <span class="marquee-item"><span>Lua Scripting</span></span>
-      <span class="marquee-item">Node.js APIs</span>
-      <span class="marquee-item"><span>PHP Backends</span></span>
-      <span class="marquee-item">Automation</span>
-      <span class="marquee-item"><span>Discord Bots</span></span>
-      <span class="marquee-item">Web Development</span>
-      <span class="marquee-item"><span>Python Scripts</span></span>
-      <span class="marquee-item">C# / WPF Apps</span>
-      <span class="marquee-item"><span>Lua Scripting</span></span>
-      <span class="marquee-item">Node.js APIs</span>
-      <span class="marquee-item"><span>PHP Backends</span></span>
-      <span class="marquee-item">Automation</span>
-    </div>
   </div>
+</nav>
 
-  <section class="section" id="skills">
-    <div class="wrap">
-      <div class="section-header reveal">
-        <span class="sec-label">Capabilities</span>
-        <h2 class="sec-title">Technical Stack</h2>
+<header class="hero" id="top">
+  <div class="wrap">
+
+    <span class="badge">
+      <i class="dot" aria-hidden="true"></i>
+      Currently building a RISC-V processor
+    </span>
+
+    <h1>
+      Software. Hardware.<br>
+      <span>Everything between.</span>
+    </h1>
+
+    <p>
+      I'm MD. Jarif Hossain, known as AK74. I build software, embedded
+      systems, digital hardware and AI systems from scratch — currently
+      working on a RISC-V processor, ESP32 projects and my own AI experiments.
+    </p>
+
+    <div class="btns">
+      <a class="btn p" href="#projects">See my work</a>
+      <a
+        class="btn"
+        href="https://github.com/ssh-ak74"
+        target="_blank"
+        rel="noopener noreferrer">
+        GitHub ↗
+      </a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <b>ARC-01</b>
+        <span>RISC-V processor in progress</span>
       </div>
-      <div class="skills-grid reveal" id="skills-grid"></div>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="section-header reveal">
-        <span class="sec-label">How it works</span>
-        <h2 class="sec-title">The Process</h2>
+      <div class="stat">
+        <b>SebAI</b>
+        <span>AI system built from scratch</span>
       </div>
-      <div class="process-grid reveal">
-        <div class="process-step">
-          <div class="step-num">01</div>
-          <div class="step-title">Discuss</div>
-          <div class="step-desc">Hit me up on Discord. Tell me what you want built, the scope, deadline.</div>
-        </div>
-        <div class="process-step">
-          <div class="step-num">02</div>
-          <div class="step-title">Agree</div>
-          <div class="step-desc">We settle on price, timeline, and payment split (upfront + on delivery).</div>
-        </div>
-        <div class="process-step">
-          <div class="step-num">03</div>
-          <div class="step-title">Build</div>
-          <div class="step-desc">I code it. You get updates. No ghosting, no radio silence.</div>
-        </div>
-        <div class="process-step">
-          <div class="step-num">04</div>
-          <div class="step-title">Ship</div>
-          <div class="step-desc">Delivered, tested, yours. Support included post-delivery.</div>
-        </div>
+
+      <div class="stat">
+        <b>3</b>
+        <span>Focus areas: SW · HW · AI</span>
       </div>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="stats-grid reveal">
-        <div class="stat-cell">
-          <div class="stat-val">9+</div>
-          <div class="stat-label">Languages &amp; frameworks</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-val">15+</div>
-          <div class="stat-label">Projects shipped</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-val">99.99%</div>
-          <div class="stat-label">Optimized, no bugs</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-val">100%</div>
-          <div class="stat-label">Custom builds, no templates</div>
-        </div>
+      <div class="stat">
+        <b>UTC+6</b>
+        <span>Dhaka, Bangladesh</span>
       </div>
-    </div>
-  </section>
 
-  <!-- PROJECT SHOWCASE -->
-<section id="projects" class="projects-section reveal">
-    <div class="section-head">
-        <div>
-            <span class="section-kicker">PROJECTS</span>
-            <h2>Things I've built.</h2>
-            <p>
-                A collection of projects, experiments and tools I've worked on.
-            </p>
-        </div>
-
-        <a
-            class="projects-github"
-            href="https://github.com/ssh-ak74"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            GitHub ↗
-        </a>
     </div>
 
-    <!-- Featured project -->
-    <article class="project-featured">
-        <div class="project-featured-preview">
-            <div class="project-window">
-                <div class="project-window-top">
-                    <div class="project-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+  </div>
+</header>
 
-                    <span class="project-window-title">
-                        StudentOS
-                    </span>
+<section id="about">
+  <div class="wrap">
 
-                    <span class="project-window-version">
-                        v0.1.0
-                    </span>
-                </div>
-
-                <div class="studentos-preview">
-                    <div class="studentos-sidebar">
-                        <div class="studentos-logo">S</div>
-
-                        <div class="studentos-nav active">⌂</div>
-                        <div class="studentos-nav">⌕</div>
-                        <div class="studentos-nav">▤</div>
-                        <div class="studentos-nav">◷</div>
-                    </div>
-
-                    <div class="studentos-main">
-                        <span class="studentos-small">WELCOME BACK</span>
-
-                        <h3>StudentOS</h3>
-
-                        <p>
-                            Offline learning tools built for students.
-                        </p>
-
-                        <div class="studentos-cards">
-                            <div>
-                                <strong>Calculator</strong>
-                                <span>Scientific</span>
-                            </div>
-
-                            <div>
-                                <strong>Formulas</strong>
-                                <span>Library</span>
-                            </div>
-
-                            <div>
-                                <strong>Notes</strong>
-                                <span>Offline</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="project-featured-info">
-            <div class="project-meta">
-                <span class="project-featured-label">FEATURED PROJECT</span>
-                <span class="project-status">
-                    <i></i>
-                    WORKING
-                </span>
-            </div>
-
-            <h3>StudentOS</h3>
-
-            <p>
-                A pocket-sized offline learning environment designed around
-                speed, simplicity and keyboard-first interaction.
-            </p>
-
-            <div class="project-tags">
-                <span>Python</span>
-                <span>PySide6</span>
-                <span>Offline</span>
-                <span>Education</span>
-            </div>
-
-            <div class="project-actions">
-                <a
-                    href="https://github.com/ssh-ak74/StudentOS"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-btn primary"
-                >
-                    View Project ↗
-                </a>
-
-                <button
-                    class="project-btn secondary project-details-btn"
-                    data-project="studentos"
-                >
-                    Details
-                </button>
-            </div>
-        </div>
-    </article>
-
-    <!-- Project grid -->
-    <div class="projects-grid">
-
-        <!-- A14 Optimizer -->
-        <article class="project-card reveal">
-            <div class="project-card-image mega-preview">
-                <div class="preview-code">
-                    <span>const</span> optimizer = {
-                    <br>
-                    &nbsp;&nbsp;tools: <b>inf</b>,
-                    <br>
-                    &nbsp;&nbsp;status: <em>"ready"</em>
-                    <br>
-                    &nbsp;&nbsp;programed_by: <b>AK74</b>,
-                    <br>
-                    };
-                </div>
-
-                <div class="preview-badge">Optimizer</div>
-            </div>
-
-            <div class="project-card-body">
-                <div class="project-card-top">
-                    <span class="project-number">01</span>
-                    <span class="project-type">SOFTWARE</span>
-                </div>
-
-                <h3>A14 Optimizer</h3>
-
-                <p>
-                    A collection of useful optimizing utilities packed into 
-                    one light Python and C-Sharp based software
-                </p>
-
-                <div class="project-card-tags">
-                    <span>C-Sharp</span>
-                    <span>Python</span>
-                    <span>CSS</span>
-                </div>
-
-                <div class="project-card-actions">
-                    <a
-                        href="https://github.com/ssh-ak74/a14-optimizer"
-                        class="project-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        COMING SOON
-                    </a>
-
-                    <a
-                        href="https://github.com/ssh-ak74/a14-optimizer"
-                        class="project-link muted"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        GitHub
-                    </a>
-                </div>
-            </div>
-        </article>
-
-
-        <!-- Dev Toolkit -->
-        <article class="project-card reveal">
-            <div class="project-card-image dev-preview">
-                <div class="terminal-preview">
-                    <div>
-                        <span class="terminal-green">$</span>
-                        start dev_toolkit.exe
-                    </div>
-
-                    <div class="terminal-dim">
-                        Starting Dev ToolKit...
-                    </div>
-
-                    <div>
-                        <span class="terminal-green">✓</span>
-                        Ready in 47ms
-                    </div>
-                </div>
-
-                <div class="preview-badge">DEVELOPER TOOL</div>
-            </div>
-
-            <div class="project-card-body">
-                <div class="project-card-top">
-                    <span class="project-number">02</span>
-                    <span class="project-type">TOOLS</span>
-                </div>
-
-                <h3>Dev Toolkit</h3>
-
-                <p>
-                    Small utilities for developers including JSON tools,
-                    converters and other everyday helpers.
-                </p>
-
-                <div class="project-card-tags">
-                    <span>JavaScript</span>
-                    <span>PHP</span>
-                    <span>Tools</span>
-                </div>
-
-                <div class="project-card-actions">
-                    <a href="#tools" class="project-link">
-                        Try Now!
-                    </a>
-
-                </div>
-            </div>
-        </article>
-
-
-        <!-- Color Tool -->
-        <!-- Color Tool -->
-<article class="project-card reveal">
-    <div class="project-card-image color-preview">
-        <div class="color-orb orb-one"></div>
-        <div class="color-orb orb-two"></div>
-        <div class="color-orb orb-three"></div>
-
-        <div class="color-preview-info">
-            <span>#7C3AED</span>
-            <small>RGB · HSL · HSV · CMYK</small>
-        </div>
-
-        <div class="preview-badge">DESIGN TOOL</div>
+    <div class="rv">
+      <span class="eyebrow">About</span>
+      <h2>Build. Break. Rebuild.</h2>
     </div>
 
-    <div class="project-card-body">
-        <div class="project-card-top">
-            <span class="project-number">03</span>
-            <span class="project-type">UTILITY</span>
-        </div>
+    <div class="about rv">
 
-        <h3>Color Tool</h3>
-
+      <div>
         <p>
-            A color utility for exploring formats, contrast,
-            gradients and generated palettes.
+          I started with Discord bots and web apps, then kept going down the
+          stack: ESP32 sensors and displays, AI models trained from scratch,
+          and now digital hardware design in SystemVerilog.
         </p>
 
-        <div class="project-card-tags">
-            <span>JavaScript</span>
-            <span>CSS</span>
-            <span>UI</span>
-        </div>
-
-        <div class="project-card-actions">
-          <a href="#panel-color" class="project-link" onclick="openColorTool(); return false;">
-            Open Tool ↗
-          </a>
+        <p>
+          I like understanding things end to end, from the pixel on the screen
+          down to the logic that drives it. Right now that means designing a
+          RISC-V processor and documenting the work in public.
+        </p>
       </div>
-    </div>
-</article>
 
+      <div class="term" aria-label="Terminal-style introduction">
+        <i>$</i> whoami<br>
+        <em>ak74</em> // MD. Jarif Hossain<br>
 
-<!-- SebAI -->
-<article class="project-card reveal">
-    <div class="project-card-image ai-preview">
-        <div class="ai-grid"></div>
+        <i>$</i> cat focus.txt<br>
+        software · embedded · digital hardware · AI<br>
 
-        <div class="ai-core">
-            <span>SEB</span>
-            <small>AI</small>
-        </div>
+        <i>$</i> git log --oneline -1<br>
+        <em>wip:</em> risc-v core<br>
 
-        <div class="ai-status">
-            <i></i>
-            MODEL ONLINE
-        </div>
+        <i>$</i> echo $MOTTO<br>
+        BUILD • BREAK • REBUILD
+      </div>
 
-        <div class="preview-badge">AI</div>
     </div>
 
-    <div class="project-card-body">
-        <div class="project-card-top">
-            <span class="project-number">04</span>
-            <span class="project-type">AI / ML</span>
+  </div>
+</section>
+
+<section id="projects" style="padding-top:0">
+  <div class="wrap">
+
+    <div class="rv">
+      <span class="eyebrow">Projects</span>
+      <h2>Things I've built.</h2>
+      <p class="sub">
+        Processors, firmware, AI and tools. Everything is documented publicly.
+      </p>
+    </div>
+
+    <div class="grid">
+
+      <article class="card f feat rv">
+
+        <div class="top">
+          <span>Hardware · Featured</span>
+          <span class="st">In progress</span>
+        </div>
+
+        <h3>arc-01 — open-source RISC-V processor</h3>
+
+        <p>
+          An open-source processor project written in SystemVerilog,
+          including the RTL and verification work behind my RISC-V CPU.
+        </p>
+
+        <div class="chips">
+          <span>SystemVerilog</span>
+          <span>RISC-V</span>
+          <span>RTL</span>
+        </div>
+
+        <div class="btns">
+          <a
+            class="btn p"
+            href="https://github.com/ssh-ak74/arc-01"
+            target="_blank"
+            rel="noopener noreferrer">
+            View repo ↗
+          </a>
+        </div>
+
+      </article>
+
+      <article class="card rv">
+
+        <div class="top">
+          <span>AI / ML</span>
+          <span class="st">Building</span>
         </div>
 
         <h3>SebAI</h3>
 
         <p>
-            An experimental AI project focused on building and
-            training a model from the ground up.
+          An AI system built from scratch with its own tokenizer,
+          data pipeline, initialized weights and custom training loop.
         </p>
 
-        <div class="project-card-tags">
-            <span>Python</span>
-            <span>AI</span>
-            <span>ML</span>
+        <div class="chips">
+          <span>Python</span>
+          <span>Jupyter</span>
+          <span>PyTorch</span>
         </div>
 
-        <div class="project-card-actions">
-            <a href="#" class="project-link">
-                Still Building
-            </a>
-
-            <a href="#" class="project-link muted">
-                GitHub
-            </a>
-        </div>
-    </div>
-</article>
-
-    </div>
-
-    <div class="projects-more">
-        <span>MORE PROJECTS</span>
-        <div class="projects-line"></div>
-        <a
-            href="https://github.com/ssh-ak74?=repositories"
+        <div class="btns">
+          <a
+            class="btn"
+            href="https://github.com/ssh-ak74/SebAI"
             target="_blank"
-            rel="noopener noreferrer"
-        >
-            View all repositories ↗
-        </a>
+            rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        </div>
+
+      </article>
+
+      <article class="card rv">
+
+        <div class="top">
+          <span>Embedded</span>
+          <span class="st ok">Done</span>
+        </div>
+
+        <h3>esp-32-radar</h3>
+
+        <p>
+          A radar project built around an HC-SR04 ultrasonic sensor
+          and ESP32, with a browser-based interface.
+        </p>
+
+        <div class="chips">
+          <span>C++</span>
+          <span>ESP32</span>
+          <span>Sensors</span>
+        </div>
+
+        <div class="btns">
+          <a
+            class="btn"
+            href="https://github.com/ssh-ak74/esp-32-radar"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        </div>
+
+      </article>
+
+      <article class="card rv">
+
+        <div class="top">
+          <span>Software</span>
+          <span class="st ok">Working</span>
+        </div>
+
+        <h3>StudentOS</h3>
+
+        <p>
+          A pocket-sized offline learning environment with a scientific
+          calculator, formula library and keyboard-first interface.
+        </p>
+
+        <div class="chips">
+          <span>Python</span>
+          <span>PySide6</span>
+          <span>Offline</span>
+        </div>
+
+        <div class="btns">
+          <a
+            class="btn"
+            href="https://github.com/ssh-ak74/StudentOS"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        </div>
+
+      </article>
+
+      <article class="card rv">
+
+        <div class="top">
+          <span>Software</span>
+          <span class="st">Building</span>
+        </div>
+
+        <h3>A17 Optimizer</h3>
+
+        <p>
+          A collection of system optimization utilities built around
+          lightweight Python and C# tooling.
+        </p>
+
+        <div class="chips">
+          <span>C#</span>
+          <span>Python</span>
+        </div>
+
+        <div class="btns">
+          <a
+            class="btn"
+            href="https://github.com/ssh-ak74/A17-Optimizer"
+            target="_blank"
+            rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        </div>
+
+      </article>
+
+      <article class="card rv">
+
+        <div class="top">
+          <span>Web · Tools</span>
+          <span class="st ok">Live</span>
+        </div>
+
+        <h3>Dev Toolkit</h3>
+
+        <p>
+          JSON, Base64, UUID and color utilities that run entirely
+          in your browser.
+        </p>
+
+        <div class="chips">
+          <span>JavaScript</span>
+          <span>HTML</span>
+        </div>
+
+        <div class="btns">
+          <a class="btn" href="#tools">Try it ↓</a>
+        </div>
+
+      </article>
+
     </div>
+
+    <p class="rv note">
+      More on
+      <a
+        class="ln"
+        href="https://github.com/ssh-ak74?tab=repositories"
+        target="_blank"
+        rel="noopener noreferrer">
+        all repositories ↗
+      </a>
+    </p>
+
+  </div>
 </section>
 
+<section id="skills" style="padding-top:0">
+  <div class="wrap">
 
-<!-- PROJECT DETAILS MODAL -->
-<div class="project-modal" id="projectModal" aria-hidden="true">
-    <div class="project-modal-backdrop"></div>
-
-    <div class="project-modal-box">
-        <button
-            class="project-modal-close"
-            id="projectModalClose"
-            aria-label="Close"
-        >
-            ×
-        </button>
-
-        <span class="section-kicker">PROJECT DETAILS</span>
-
-        <h2 id="modalProjectTitle">StudentOS</h2>
-
-        <p id="modalProjectDescription"></p>
-
-        <div class="project-modal-info">
-            <div>
-                <span>STATUS</span>
-                <strong id="modalProjectStatus"></strong>
-            </div>
-
-            <div>
-                <span>STACK</span>
-                <strong id="modalProjectStack"></strong>
-            </div>
-
-            <div>
-                <span>TYPE</span>
-                <strong id="modalProjectType"></strong>
-            </div>
-        </div>
-
-        <div class="project-modal-features" id="modalProjectFeatures"></div>
-
-        <div class="project-actions">
-            <a
-                id="modalProjectGithub"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="project-btn primary"
-            >
-                GitHub ↗
-            </a>
-
-            <button
-                class="project-btn secondary"
-                id="projectModalDone"
-            >
-                Close
-            </button>
-        </div>
+    <div class="rv">
+      <span class="eyebrow">Stack</span>
+      <h2>What I work with.</h2>
     </div>
-</div>
 
-  <section class="section" id="pricing">
-    <div class="wrap">
-      <div class="section-header reveal">
-        <span class="sec-label">Services</span>
-        <h2 class="sec-title">Pricing</h2>
-      </div>
+    <div class="grid rv">
 
-      <div class="tab-bar reveal">
-        <button class="tab-btn active" onclick="switchPricingTab('bots',this)">Discord Bots</button>
-        <button class="tab-btn" onclick="switchPricingTab('web',this)">Websites</button>
-        <button class="tab-btn" onclick="switchPricingTab('hosting',this)">Hosting</button>
-      </div>
-
-      <div class="pricing-panel active" id="price-bots">
-        <div class="proj-grid">
-          <div class="glass pricing-card" style="--tier:#4ade80">
-            <div class="tier-badge"><div class="tier-dot" style="background:#4ade80;box-shadow:0 0 8px #4ade80"></div><span class="tier-name" style="color:#4ade80">Starter</span></div>
-            <h3>Basic Bot</h3>
-            <p>Basic moderation + simple commands. 1–2 day delivery.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$5–10</div>
-              <div class="price-after">+ $5–15 after delivery</div>
-              <div class="price-total" style="color:#4ade80">Total: $10–20</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Order
-              </button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#fbbf24;box-shadow:0 0 8px #fbbf24"></div><span class="tier-name" style="color:#fbbf24">Standard</span></div>
-            <h3>Full Moderation Bot</h3>
-            <p>Moderation system, leveling, custom commands, basic setup help.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$10–25</div>
-              <div class="price-after">+ $15–25 after delivery</div>
-              <div class="price-total" style="color:#fbbf24">Total: $25–35</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Order
-              </button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#60a5fa;box-shadow:0 0 8px #60a5fa"></div><span class="tier-name" style="color:#60a5fa">Advanced</span></div>
-            <h3>Advanced Bot</h3>
-            <p>Everything in Standard + database (users, stats, logs), advanced command system, error handling &amp; polish.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$20–25</div>
-              <div class="price-after">+ $30–50 after delivery</div>
-              <div class="price-total" style="color:#60a5fa">Total: $50–75</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Order
-              </button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#c084fc;box-shadow:0 0 8px #c084fc"></div><span class="tier-name" style="color:#c084fc">Premium</span></div>
-            <h3>Premium Bot</h3>
-            <p>Everything in Standard + 1–3 integrations: Minecraft bridge, web dashboard, or API integration.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$40</div>
-              <div class="price-after">+ $60–120 after delivery</div>
-              <div class="price-total" style="color:#c084fc">Total: $100–160</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                Order
-              </button>
-            </div>
-          </div>
+      <div class="card">
+        <h3>Languages</h3>
+        <div class="chips">
+          <span>Python</span>
+          <span>JavaScript</span>
+          <span>TypeScript</span>
+          <span>C++</span>
+          <span>C#</span>
+          <span>PHP</span>
+          <span>Lua</span>
+          <span>SystemVerilog</span>
         </div>
       </div>
 
-      <div class="pricing-panel" id="price-web">
-        <div class="proj-grid">
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#4ade80;box-shadow:0 0 8px #4ade80"></div><span class="tier-name" style="color:#4ade80">Starter</span></div>
-            <h3>Starter Website</h3>
-            <p>1–3 pages, clean responsive design, contact form or email.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$10–20</div>
-              <div class="price-after">+ $10–30 after delivery</div>
-              <div class="price-total" style="color:#4ade80">Total: $20–50</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">Order</button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#fbbf24;box-shadow:0 0 8px #fbbf24"></div><span class="tier-name" style="color:#fbbf24">Business</span></div>
-            <h3>Business Website</h3>
-            <p>4–6 pages, better UI/UX, contact form + basic SEO, mobile optimized.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$20–40</div>
-              <div class="price-after">+ $20–60 after delivery</div>
-              <div class="price-total" style="color:#fbbf24">Total: $40–100</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">Order</button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#60a5fa;box-shadow:0 0 8px #60a5fa"></div><span class="tier-name" style="color:#60a5fa">Advanced</span></div>
-            <h3>Advanced Website</h3>
-            <p>Custom layout, backend (login/dashboard/DB), API integration, simple admin panel.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$40–80</div>
-              <div class="price-after">+ $60–120 after delivery</div>
-              <div class="price-total" style="color:#60a5fa">Total: $100–200</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">Order</button>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#c084fc;box-shadow:0 0 8px #c084fc"></div><span class="tier-name" style="color:#c084fc">Premium</span></div>
-            <h3>Premium / Web App</h3>
-            <p>Full custom system, auth, database + user system, dashboards + integrations.</p>
-            <div class="price-box">
-              <div class="price-label">Upfront</div>
-              <div class="price-main">$80–150</div>
-              <div class="price-after">+ $100–300 after delivery</div>
-              <div class="price-total" style="color:#c084fc">Total: $180–450+</div>
-              <button class="order-btn" onclick="document.getElementById('orderModal').classList.add('open')">Order</button>
-            </div>
-          </div>
+      <div class="card">
+        <h3>Web</h3>
+        <div class="chips">
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>Tailwind</span>
+          <span>React</span>
+          <span>Next.js</span>
+          <span>Node.js</span>
+          <span>MySQL</span>
         </div>
       </div>
 
-      <div class="pricing-panel" id="price-hosting">
-        <div class="proj-grid" style="max-width:600px">
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#4ade80"></div><span class="tier-name" style="color:#4ade80">Basic</span></div>
-            <h3>Basic Hosting</h3>
-            <p>24/7 uptime, basic monitoring, resource protection.</p>
-            <div class="price-box">
-              <div class="price-main">$5–10<span style="font-size:0.85rem;font-weight:400;color:rgba(255,255,255,0.35)">/mo</span></div>
-              <div class="price-unavail">Currently unavailable</div>
-            </div>
-          </div>
-          <div class="glass pricing-card">
-            <div class="tier-badge"><div class="tier-dot" style="background:#60a5fa"></div><span class="tier-name" style="color:#60a5fa">Managed</span></div>
-            <h3>Managed Hosting</h3>
-            <p>Full maintenance, fixes + updates, monitoring + stability control.</p>
-            <div class="price-box">
-              <div class="price-main">$10–25<span style="font-size:0.85rem;font-weight:400;color:rgba(255,255,255,0.35)">/mo</span></div>
-              <div class="price-unavail">Currently unavailable</div>
-            </div>
-          </div>
+      <div class="card">
+        <h3>AI / ML</h3>
+        <div class="chips">
+          <span>PyTorch</span>
+          <span>NumPy</span>
+          <span>Tokenizers</span>
+          <span>Training from scratch</span>
         </div>
       </div>
+
+      <div class="card">
+        <h3>Hardware</h3>
+        <div class="chips">
+          <span>ESP32</span>
+          <span>Arduino</span>
+          <span>GPIO</span>
+          <span>I²C</span>
+          <span>SPI</span>
+          <span>OLED</span>
+          <span>RISC-V</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Tools</h3>
+        <div class="chips">
+          <span>Git</span>
+          <span>GitHub</span>
+          <span>Linux</span>
+          <span>VS Code</span>
+        </div>
+      </div>
+
     </div>
-  </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="section-header reveal">
-        <span class="sec-label">Support</span>
-        <h2 class="sec-title">Donate</h2>
-      </div>
-      <div class="glass donate-unavailable">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
-        <div class="unavail-badge">Currently Unavailable</div>
-        <h3>Donations Closed</h3>
-        <p>Not available right now. Check back later or hit me on Discord.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="tools">
-    <div class="wrap">
-      <div class="section-header reveal">
-        <span class="sec-label">Utilities</span>
-        <h2 class="sec-title">Tools</h2>
-      </div>
-
-      <div class="tab-bar reveal">
-        <button class="tab-btn active" onclick="switchTab('ip',this)">IP / Domain Lookup</button>
-        <button class="tab-btn" onclick="switchTab('color',this)">Color Tool</button>
-        <button class="tab-btn" onclick="switchTab('json',this)">JSON Tool</button>
-        <button class="tab-btn" onclick="switchTab('devkit',this)">Dev Toolkit</button>
-        <button class="tab-btn" onclick="switchTab('diff',this)">Text Diff</button>
-        <button class="tab-btn" onclick="switchTab('api',this)">API Tester</button>
-      </div>
-
-      <div class="tool-panel active" id="panel-ip">
-        <div class="card">
-          <h3>IP / Domain Lookup</h3>
-          <p>Enter an IP or domain to get full geo data, ASN, proxy detection and a map. Leave blank for your own IP.</p>
-          <div class="input-row">
-            <input type="text" id="ipInput" placeholder="IP or domain — blank = your IP" inputmode="url" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
-            <button class="btn-main" onclick="lookupIP()">Lookup</button>
-          </div>
-          <div class="ip-status" id="ipStatus"></div>
-          <div class="action-row" id="ipActions" style="display:none">
-            <button class="btn-ghost" onclick="copyJSON()">Copy JSON</button>
-            <button class="btn-ghost" onclick="downloadJSON()">Download JSON</button>
-          </div>
-          <div class="output-grid" id="ipOutput"></div>
-          <div class="map-wrap" id="ipMap"></div>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-color">
-        <div class="card" style="max-width:660px">
-          <h3>Advanced Color Tool</h3>
-          <p>Color converter, palette generator, gradients, Tailwind classes and contrast checker.</p>
-          <div class="color-preview-bar" id="colorPreview"></div>
-          <div class="picker-row">
-            <label>Pick</label>
-            <input type="color" id="colorPicker" value="#ff2222">
-            <input type="text" class="hex-text" id="hexManual" placeholder="#ff2222" maxlength="7">
-          </div>
-          <div class="sec-lbl">Color Formats</div>
-          <div class="fmt-row"><label>HEX</label><input id="fHex" readonly><button class="btn-cp" onclick="cpField('fHex',this)">Copy</button></div>
-          <div class="fmt-row"><label>RGB</label><input id="fRgb" readonly><button class="btn-cp" onclick="cpField('fRgb',this)">Copy</button></div>
-          <div class="fmt-row"><label>HSL</label><input id="fHsl" readonly><button class="btn-cp" onclick="cpField('fHsl',this)">Copy</button></div>
-          <div class="fmt-row"><label>RGBA</label><input id="fRgba" readonly><button class="btn-cp" onclick="cpField('fRgba',this)">Copy</button></div>
-          <div class="fmt-row"><label>ARGB</label><input id="fArgb" readonly><button class="btn-cp" onclick="cpField('fArgb',this)">Copy</button></div>
-          <div class="fmt-row"><label>HSV</label><input id="fHsv" readonly><button class="btn-cp" onclick="cpField('fHsv',this)">Copy</button></div>
-          <div class="fmt-row"><label>CMYK</label><input id="fCmyk" readonly><button class="btn-cp" onclick="cpField('fCmyk',this)">Copy</button></div>
-          <div class="sec-lbl">Palette Generator</div>
-          <button class="btn-ghost" style="width:100%" onclick="genPalette()">Generate Palette</button>
-          <div class="palette-strip" id="palette"><div id="p1"></div><div id="p2"></div><div id="p3"></div><div id="p4"></div><div id="p5"></div></div>
-          <div class="sec-lbl">Gradient Generator</div>
-          <button class="btn-ghost" style="width:100%" onclick="genGradient()">Generate Gradient</button>
-          <div class="gradient-bar" id="gradientBar"></div>
-          <button class="btn-ghost" style="width:100%;margin-top:0.5rem" onclick="cpGradient()">Copy Gradient CSS</button>
-          <div class="sec-lbl">Tailwind / CSS Variable</div>
-          <button class="btn-ghost" style="width:100%" onclick="cpCSSVar()">Copy CSS Variable</button>
-          <div class="tw-box" id="twBox"></div>
-          <div class="sec-lbl">Contrast Checker</div>
-          <div class="contrast-row">
-            <div class="contrast-sw" id="cs1">Text on Color</div>
-            <div class="contrast-sw" id="cs2">Color on Dark</div>
-          </div>
-          <div class="contrast-info" id="csInfo"></div>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-json">
-        <div class="card" style="max-width:900px">
-          <h3>JSON Tool</h3>
-          <p>Format, minify, validate, tree-view, search, convert to TypeScript.</p>
-          <textarea id="jsonInput" placeholder="Paste JSON here..." style="width:100%;min-height:140px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.75rem;padding:0.875rem;font-family:monospace;font-size:0.8rem;outline:none;resize:vertical;transition:border-color 0.2s" onfocus="this.style.borderColor='rgba(255,255,255,0.25)'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea>
-          <div class="action-row" style="margin-top:0.875rem">
-            <button class="btn-main" onclick="jsonFormat()">Format</button>
-            <button class="btn-ghost" onclick="jsonMinify()">Minify</button>
-            <button class="btn-ghost" onclick="jsonValidate()">Validate</button>
-            <button class="btn-ghost" onclick="jsonToTS()">→ TypeScript</button>
-            <button class="btn-ghost" onclick="copyJsonOut()">Copy Output</button>
-          </div>
-          <div id="jsonStatus" style="margin:0.75rem 0;font-size:0.85rem;min-height:1.4rem"></div>
-          <div style="display:flex;gap:0.6rem;margin-bottom:0.75rem">
-            <input id="jsonSearch" placeholder="Search key or value..." style="flex:1;padding:0.55rem 0.875rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;outline:none;font-size:0.82rem" oninput="jsonSearchRun()">
-            <button class="btn-ghost" onclick="jsonSearchRun()">Search</button>
-          </div>
-          <div id="jsonOutput" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:0.75rem;padding:0.875rem;font-family:monospace;font-size:0.78rem;overflow:auto;max-height:380px;white-space:pre-wrap;word-break:break-word;display:none"></div>
-          <div id="jsonTree" style="margin-top:0.75rem;overflow:auto;max-height:380px"></div>
-          <div id="jsonTS" style="display:none;margin-top:0.875rem">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
-              <span style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.25)">TypeScript Interface</span>
-              <button class="btn-ghost" onclick="copyJsonTS()">Copy TS</button>
-            </div>
-            <div id="jsonTSOut" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:0.75rem;padding:0.875rem;font-family:monospace;font-size:0.78rem;overflow:auto;max-height:240px;white-space:pre-wrap"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-devkit">
-        <div id="devkit-inner" style="display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
-          <div class="card">
-            <h3>UUID v4 Generator</h3>
-            <p>Cryptographically random UUIDs.</p>
-            <div id="uuidOut" style="font-family:monospace;font-size:0.8rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.5rem;padding:0.75rem;margin-bottom:0.875rem;word-break:break-all;min-height:2.5rem"></div>
-            <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
-              <button class="btn-main" onclick="genUUID()">Generate</button>
-              <button class="btn-ghost" onclick="genUUIDBulk()">×10</button>
-              <button class="btn-ghost" onclick="copyEl('uuidOut')">Copy</button>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Password Generator</h3>
-            <p>Strong customizable passwords.</p>
-            <div id="passOut" style="font-family:monospace;font-size:0.8rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.5rem;padding:0.75rem;margin-bottom:0.875rem;word-break:break-all;min-height:2.5rem"></div>
-            <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;flex-wrap:wrap">
-              <label style="font-size:0.78rem;color:rgba(255,255,255,0.4)">Length</label>
-              <input type="range" id="passLen" min="8" max="64" value="20" style="flex:1;accent-color:#fff" oninput="document.getElementById('passLenVal').textContent=this.value;genPass()">
-              <span id="passLenVal" style="font-size:0.78rem;width:24px">20</span>
-            </div>
-            <div style="display:flex;gap:1rem;margin-bottom:0.875rem;flex-wrap:wrap">
-              <label style="font-size:0.78rem;display:flex;align-items:center;gap:0.4rem"><input type="checkbox" id="passSymbols" checked onchange="genPass()"> Symbols</label>
-              <label style="font-size:0.78rem;display:flex;align-items:center;gap:0.4rem"><input type="checkbox" id="passNumbers" checked onchange="genPass()"> Numbers</label>
-              <label style="font-size:0.78rem;display:flex;align-items:center;gap:0.4rem"><input type="checkbox" id="passUpper" checked onchange="genPass()"> Uppercase</label>
-            </div>
-            <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
-              <button class="btn-main" onclick="genPass()">Regenerate</button>
-              <button class="btn-ghost" onclick="copyEl('passOut')">Copy</button>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Base64 Encode / Decode</h3>
-            <p>Live encode or decode Base64 strings.</p>
-            <textarea id="b64Input" placeholder="Type to encode..." style="width:100%;min-height:80px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;padding:0.75rem;font-family:monospace;font-size:0.78rem;outline:none;resize:vertical;margin-bottom:0.75rem" oninput="b64Encode()"></textarea>
-            <div style="display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap">
-              <button class="btn-main" onclick="b64Encode()">Encode</button>
-              <button class="btn-ghost" onclick="b64Decode()">Decode</button>
-              <button class="btn-ghost" onclick="copyEl('b64Out')">Copy</button>
-            </div>
-            <div id="b64Out" style="font-family:monospace;font-size:0.78rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:0.5rem;padding:0.75rem;word-break:break-all;min-height:2.5rem"></div>
-          </div>
-          <div class="card">
-            <h3>Timestamp Converter</h3>
-            <p>Unix timestamps ↔ human-readable dates.</p>
-            <div style="margin-bottom:0.75rem">
-              <label style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em">Unix Timestamp</label>
-              <div style="display:flex;gap:0.6rem;margin-top:0.375rem">
-                <input id="tsUnix" type="number" placeholder="e.g. 1700000000" inputmode="numeric" style="flex:1;padding:0.6rem 0.875rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;outline:none;font-size:0.82rem" oninput="tsFromUnix()">
-                <button class="btn-ghost" onclick="tsNow()">Now</button>
-              </div>
-            </div>
-            <div id="tsHuman" style="font-size:0.8rem;color:rgba(255,255,255,0.55);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:0.5rem;padding:0.75rem;margin-bottom:0.875rem;min-height:4rem;line-height:1.8"></div>
-            <div style="margin-bottom:0.75rem">
-              <label style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em">Human Date → Unix</label>
-              <div style="display:flex;gap:0.6rem;margin-top:0.375rem">
-                <input id="tsDate" type="datetime-local" style="flex:1;padding:0.6rem 0.875rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;outline:none;font-size:0.82rem;color-scheme:dark" oninput="tsFromDate()">
-              </div>
-            </div>
-            <div id="tsUnixOut" style="font-family:monospace;font-size:0.85rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:0.5rem;padding:0.75rem;min-height:2.5rem"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-diff">
-        <div class="card">
-          <h3>Text Diff</h3>
-          <p>Paste two texts to see added, removed, and unchanged lines.</p>
-          <div class="diff-cols" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.875rem">
-            <div>
-              <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem">Original</div>
-              <textarea id="diffA" placeholder="Original text..." style="width:100%;min-height:160px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.75rem;padding:0.875rem;font-family:monospace;font-size:0.8rem;outline:none;resize:vertical"></textarea>
-            </div>
-            <div>
-              <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem">Modified</div>
-              <textarea id="diffB" placeholder="Modified text..." style="width:100%;min-height:160px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.75rem;padding:0.875rem;font-family:monospace;font-size:0.8rem;outline:none;resize:vertical"></textarea>
-            </div>
-          </div>
-          <div style="display:flex;gap:0.6rem;margin-bottom:1.25rem;flex-wrap:wrap">
-            <button class="btn-main" onclick="runDiff()">Compare</button>
-            <button class="btn-ghost" onclick="document.getElementById('diffA').value='';document.getElementById('diffB').value='';document.getElementById('diffOut').innerHTML=''">Clear</button>
-            <button class="btn-ghost" onclick="copyDiff()">Copy Result</button>
-          </div>
-          <div id="diffStats" style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:0.75rem"></div>
-          <div id="diffOut" style="font-family:monospace;font-size:0.8rem;border-radius:0.75rem;overflow:auto;max-height:420px;border:1px solid rgba(255,255,255,0.06)"></div>
-        </div>
-      </div>
-
-      <div class="tool-panel" id="panel-api">
-        <div class="card" style="max-width:860px">
-          <h3>API Tester</h3>
-          <p>Send HTTP requests from the browser. Target server must allow CORS.</p>
-          <div style="display:flex;gap:0.75rem;margin-bottom:0.875rem;flex-wrap:wrap">
-            <select id="apiMethod" style="padding:0.65rem 0.875rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:0.75rem;font-size:0.875rem;outline:none;cursor:pointer;min-width:100px">
-              <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option>
-            </select>
-            <input id="apiUrl" type="url" placeholder="https://api.example.com/endpoint" inputmode="url" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" style="flex:1;min-width:160px;padding:0.65rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.75rem;font-size:0.875rem;outline:none">
-            <button class="btn-main" onclick="sendAPI()" id="apiSendBtn">Send</button>
-          </div>
-          <div class="api-cols" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.875rem">
-            <div>
-              <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem">Headers (Key: Value per line)</div>
-              <textarea id="apiHeaders" placeholder="Content-Type: application/json&#10;Authorization: Bearer token" style="width:100%;min-height:100px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;padding:0.75rem;font-family:monospace;font-size:0.78rem;outline:none;resize:vertical"></textarea>
-            </div>
-            <div>
-              <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.375rem">Body (JSON)</div>
-              <textarea id="apiBody" placeholder='{"key":"value"}' style="width:100%;min-height:100px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:0.5rem;padding:0.75rem;font-family:monospace;font-size:0.78rem;outline:none;resize:vertical"></textarea>
-            </div>
-          </div>
-          <div id="apiStatus" style="font-size:0.85rem;margin-bottom:0.75rem;min-height:1.4rem"></div>
-          <div style="display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap">
-            <button class="btn-ghost" onclick="copyApiResponse()">Copy Response</button>
-            <button class="btn-ghost" onclick="copyApiCurl()">Copy as cURL</button>
-          </div>
-          <div id="apiOut" style="display:none;font-family:monospace;font-size:0.78rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:0.75rem;padding:0.875rem;overflow:auto;max-height:420px;white-space:pre-wrap;word-break:break-word"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="wrap">
-      <div class="footer-top">
-        <div>
-          <div class="footer-brand">AK74</div>
-          <div class="footer-tagline">website / software / bot / AI developer. Located in Asia.</div>
-        </div>
-        <div class="footer-col">
-          <h4>Links</h4>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#tools">Tools</a>
-        </div>
-        <div class="footer-col">
-          <h4>Social</h4>
-          <a href="https://github.com/not-ak74" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://www.instagram.com/not_ak74/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="https://discord.com/users/1288360143104380942" target="_blank" rel="noopener noreferrer">Discord</a>
-        </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <a href="https://discord.gg/BM2c8wqPsE" target="_blank" rel="noopener noreferrer">Discord Server</a>
-          <a href="https://github.com/not-ak74" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="footer-copy">© 2026 AK74. All rights reserved.</div>
-        <div class="footer-socials">
-          <a href="https://github.com/not-ak74" target="_blank" class="footer-social">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-          </a>
-          <a href="https://www.instagram.com/not_ak74/" target="_blank" class="footer-social">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
-          </a>
-          <a href="https://discord.gg/BM2c8wqPsE" target="_blank" class="footer-social">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M104,140a12,12,0,1,1-12-12A12,12,0,0,1,104,140Zm60-12a12,12,0,1,0,12,12A12,12,0,0,0,164,128Zm74.45,64.9-67,29.71a16.17,16.17,0,0,1-21.71-9.1l-8.11-22q-6.72.45-13.63.46t-13.63-.46l-8.11,22a16.18,16.18,0,0,1-21.71,9.1l-67-29.71a15.93,15.93,0,0,1-9.06-18.51L38,58A16.07,16.07,0,0,1,51,46.14l36.06-5.93a16.22,16.22,0,0,1,18.26,11.88l3.26,12.84Q118.11,64,128,64t19.4.93l3.26-12.84a16.21,16.21,0,0,1,18.26-11.88L205,46.14A16.07,16.07,0,0,1,218,58l29.53,116.38A15.93,15.93,0,0,1,238.45,192.9Z"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-<div id="player">
-  <div class="p-top">
-    <div class="p-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><path d="m9 9 12-2"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-    </div>
-    <div class="p-meta">
-      <p class="p-lbl" id="p-status">Stopped</p>
-      <p class="p-ttl" id="p-title">Swing Lynn ( Slowed to Perfection )</p>
-    </div>
-    <div class="bars paused" id="p-bars"><span></span><span></span><span></span><span></span></div>
-    <div class="p-ctrls">
-      <button class="cbtn" id="btn-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" x2="5" y1="19" y2="5"/></svg></button>
-      <button class="cbtn" id="btn-play">
-        <svg id="ico-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        <svg id="ico-pause" style="display:none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="4" height="16" x="6" y="4"/><rect width="4" height="16" x="14" y="4"/></svg>
-      </button>
-      <button class="cbtn" id="btn-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/></svg></button>
-    </div>
   </div>
-  <div class="p-bot">
-    <div class="seek-wrap">
-      <input type="range" class="seekbar" id="seekbar" min="0" max="100" step="0.1" value="0" style="--p:0%">
-      <div class="seek-time"><span id="t-cur">0:00</span><span id="t-dur">0:00</span></div>
+</section>
+
+<section id="journey" style="padding-top:0">
+  <div class="wrap">
+
+    <div class="rv">
+      <span class="eyebrow">Journey</span>
+      <h2>How I got here.</h2>
     </div>
-    <div class="vol-row">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-      <input type="range" class="volbar" id="volbar" min="0" max="1" step="0.01" value="0.45" style="--p:45%">
+
+    <div class="tl rv">
+
+      <div>
+        <small>Now</small>
+        <h3>RISC-V processor &amp; arc-01</h3>
+        <p>
+          Designing and verifying an open-source processor in SystemVerilog.
+        </p>
+      </div>
+
+      <div>
+        <small>Ongoing</small>
+        <h3>SebAI</h3>
+        <p>
+          Training an AI system from scratch, tokenizer to weights.
+        </p>
+      </div>
+
+      <div>
+        <small>Embedded</small>
+        <h3>ESP32 projects</h3>
+        <p>
+          Sensors, displays and experiments on microcontrollers.
+        </p>
+      </div>
+
+      <div>
+        <small>Earlier</small>
+        <h3>Bots, web apps &amp; desktop tools</h3>
+        <p>
+          Discord bots, websites and desktop applications.
+        </p>
+      </div>
+
     </div>
+
   </div>
-</div>
+</section>
+
+<!-- DONATIONS: rendered from the DONATIONS config in the script below. -->
+<section id="donate" style="padding-top:0">
+  <div class="wrap">
+
+    <div class="rv">
+      <span class="eyebrow">Support</span>
+      <h2>Support my work.</h2>
+      <p class="sub">
+        Everything I publish is free and open source. If it helped you,
+        you can chip in. Entirely optional, always appreciated.
+      </p>
+    </div>
+
+    <div class="pay rv" id="payGrid"></div>
+
+    <p class="note rv">
+      Payments are handled by the providers above. I never see or store
+      your card details.
+    </p>
+
+  </div>
+</section>
+
+<section id="tools" style="padding-top:0">
+  <div class="wrap">
+
+    <div class="rv">
+      <span class="eyebrow">Utilities</span>
+      <h2>Dev tools.</h2>
+    </div>
+
+    <div class="tabs" id="tabs" role="tablist" aria-label="Developer tools">
+      <button class="on" type="button" data-t="json" role="tab" aria-selected="true">JSON</button>
+      <button type="button" data-t="b64" role="tab" aria-selected="false">Base64</button>
+      <button type="button" data-t="uuid" role="tab" aria-selected="false">UUID</button>
+      <button type="button" data-t="col" role="tab" aria-selected="false">Color</button>
+    </div>
+
+    <div class="tool on" id="t-json">
+      <textarea
+        id="jin"
+        aria-label="JSON input"
+        placeholder="Paste JSON here…"></textarea>
+
+      <div class="row">
+        <button class="btn p" type="button" id="jf">Format</button>
+        <button class="btn" type="button" id="jm">Minify</button>
+        <button class="btn" type="button" data-copy="jout">Copy</button>
+      </div>
+
+      <div class="out" id="jout" aria-live="polite"></div>
+    </div>
+
+    <div class="tool" id="t-b64">
+      <textarea
+        id="bin"
+        aria-label="Base64 input"
+        placeholder="Text or standard Base64…"></textarea>
+
+      <div class="row">
+        <button class="btn p" type="button" id="be">Encode</button>
+        <button class="btn" type="button" id="bd">Decode</button>
+        <button class="btn" type="button" data-copy="bout">Copy</button>
+      </div>
+
+      <div class="out" id="bout" aria-live="polite"></div>
+    </div>
+
+    <div class="tool" id="t-uuid">
+
+      <div class="out" id="uout" aria-live="polite"></div>
+
+      <div class="row">
+        <button class="btn p" type="button" id="ug">Generate</button>
+        <button class="btn" type="button" id="ug10">×10</button>
+        <button class="btn" type="button" data-copy="uout">Copy</button>
+      </div>
+
+    </div>
+
+    <div class="tool" id="t-col">
+
+      <div class="row">
+        <input
+          type="color"
+          id="cp"
+          value="#5e6ad2"
+          aria-label="Pick color">
+
+        <input
+          type="text"
+          id="ch"
+          value="#5e6ad2"
+          maxlength="7"
+          style="max-width:140px"
+          aria-label="Hex color">
+      </div>
+
+      <div class="out" id="cout" aria-live="polite"></div>
+
+      <div class="row">
+        <button class="btn" type="button" data-copy="cout">Copy</button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+
+    <div class="rv">
+      <span class="eyebrow">Contact</span>
+      <h2>Let's talk.</h2>
+    </div>
+
+    <div class="grid rv">
+
+      <a
+        class="card"
+        href="https://discord.com/users/1288360143104380942"
+        target="_blank"
+        rel="noopener noreferrer">
+        <h3>Discord</h3>
+        <p>Fastest way to reach me.</p>
+      </a>
+
+      <a
+        class="card"
+        href="https://github.com/ssh-ak74"
+        target="_blank"
+        rel="noopener noreferrer">
+        <h3>GitHub</h3>
+        <p>Code, processors and experiments.</p>
+      </a>
+
+      <a
+        class="card"
+        href="https://x.com/not_ak74"
+        target="_blank"
+        rel="noopener noreferrer">
+        <h3>X</h3>
+        <p>@not_ak74</p>
+      </a>
+
+      <a
+        class="card"
+        href="https://www.instagram.com/not_ak74/"
+        target="_blank"
+        rel="noopener noreferrer">
+        <h3>Instagram</h3>
+        <p>@not_ak74</p>
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>
+      © <span id="yr"></span> AK74 · MD. Jarif Hossain
+    </span>
+
+    <span>
+      BUILD • BREAK • REBUILD
+    </span>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite">Copied</div>
+
+<script>
+/* ================= DONATION SETTINGS =================
+   enabled: false -> hides the Donate section and navigation link.
+
+   Each method has its own enabled flag.
+   Replace every YOUR_... value before enabling donations.
+
+   Links must use HTTPS.
+
+   Card + Google Pay should use a hosted checkout link so
+   payment/card information never touches this website.
+======================================================= */
+
+const DONATIONS = {
+  enabled: false,
+
+  methods: {
+    card: {
+      enabled: true,
+      title: 'Card',
+      note: 'Visa, Mastercard and more via secure checkout.',
+      url: 'https://YOUR_CARD_CHECKOUT_LINK'
+    },
+
+    paypal: {
+      enabled: true,
+      title: 'PayPal',
+      note: 'Send any amount with PayPal.',
+      url: 'https://paypal.me/YOUR_PAYPAL_NAME'
+    },
+
+    googlePay: {
+      enabled: true,
+      title: 'Google Pay',
+      note: 'Pay quickly with Google Pay.',
+      url: 'https://YOUR_GOOGLE_PAY_LINK'
+    },
+
+    crypto: {
+      enabled: true,
+      title: 'Crypto',
+      note: 'Copy an address and send from your wallet. Double-check the network.',
+
+      wallets: [
+        {
+          coin: 'Bitcoin',
+          network: 'Bitcoin',
+          address: 'YOUR_BTC_ADDRESS'
+        },
+        {
+          coin: 'Ethereum',
+          network: 'ERC-20',
+          address: 'YOUR_ETH_ADDRESS'
+        },
+        {
+          coin: 'USDT',
+          network: 'TRC-20',
+          address: 'YOUR_USDT_ADDRESS'
+        }
+      ]
+    }
+  }
+};
+
+/* ================= END SETTINGS ================= */
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+
+const toast = message => {
+  const t = $('#toast');
+
+  t.textContent = message || 'Copied';
+  t.classList.add('show');
+
+  clearTimeout(toast.timer);
+
+  toast.timer = setTimeout(() => {
+    t.classList.remove('show');
+  }, 1500);
+};
+
+const copy = async text => {
+  if (!text) {
+    toast('Nothing to copy');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    toast('Copied');
+  } catch {
+    toast('Copy failed');
+  }
+};
+
+const todo = value => !value || /YOUR_/.test(value);
+
+const el = (tag, cls, text) => {
+  const element = document.createElement(tag);
+
+  if (cls) {
+    element.className = cls;
+  }
+
+  if (text != null) {
+    element.textContent = text;
+  }
+
+  return element;
+};
+
+
+/* ================= DONATIONS ================= */
+
+function renderDonations() {
+  const D = DONATIONS;
+  const grid = $('#payGrid');
+  const methods = D.methods || {};
+
+  const anyMethodEnabled =
+    Object.values(methods).some(method => method && method.enabled);
+
+  if (!D.enabled || !anyMethodEnabled) {
+    $('#donate')?.remove();
+    $('#navDonate')?.remove();
+    return;
+  }
+
+  const icons = {
+    card: 'CC',
+    paypal: 'PP',
+    googlePay: 'GP',
+    crypto: '₿'
+  };
+
+  ['card', 'paypal', 'googlePay'].forEach(key => {
+    const method = methods[key];
+
+    if (!method || !method.enabled) {
+      return;
+    }
+
+    const card = el('div', 'card');
+    const button = el(
+      'a',
+      'btn p',
+      'Donate with ' + method.title + ' ↗'
+    );
+
+    card.append(
+      el('div', 'ic', icons[key]),
+      el('h3', '', method.title),
+      el('p', '', method.note)
+    );
+
+    if (
+      todo(method.url) ||
+      !/^https:\/\//.test(method.url)
+    ) {
+      button.setAttribute('aria-disabled', 'true');
+      button.textContent = 'Link not set';
+
+      console.warn(
+        'Donations: set a valid HTTPS URL for',
+        key
+      );
+    } else {
+      button.href = method.url;
+      button.target = '_blank';
+      button.rel = 'noopener noreferrer';
+    }
+
+    card.append(button);
+    grid.append(card);
+  });
+
+  const crypto = methods.crypto;
+
+  if (crypto && crypto.enabled) {
+    const card = el('div', 'card f wal');
+
+    card.append(
+      el('div', 'ic', icons.crypto),
+      el('h3', '', crypto.title),
+      el('p', '', crypto.note)
+    );
+
+    (crypto.wallets || []).forEach(wallet => {
+      const row = el('div', 'wr');
+
+      const name = el('b', '', wallet.coin);
+      const network = el('small', '', wallet.network);
+      const address = el(
+        'code',
+        '',
+        todo(wallet.address)
+          ? 'Address not set'
+          : wallet.address
+      );
+
+      const button = el('button', 'btn', 'Copy');
+      button.type = 'button';
+
+      name.append(network);
+
+      if (todo(wallet.address)) {
+        button.setAttribute('aria-disabled', 'true');
+      } else {
+        button.onclick = () => copy(wallet.address);
+      }
+
+      row.append(name, address, button);
+      card.append(row);
+    });
+
+    grid.append(card);
+  }
+}
+
+renderDonations();
+
+
+/* ================= GENERAL UI ================= */
+
+$('#yr').textContent = new Date().getFullYear();
+
+
+/* Mobile navigation */
+
+const burger = $('#burger');
+const links = $('#links');
+
+burger.onclick = () => {
+  const open = links.classList.toggle('open');
+
+  burger.setAttribute('aria-expanded', String(open));
+  burger.setAttribute(
+    'aria-label',
+    open ? 'Close menu' : 'Open menu'
+  );
+};
+
+$$('#links a').forEach(link => {
+  link.onclick = () => {
+    links.classList.remove('open');
+
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open menu');
+  };
+});
+
+
+/* Scroll reveal */
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  {
+    threshold:0.1
+  }
+);
+
+$$('.rv').forEach(element => observer.observe(element));
+
+
+/* Tool tabs */
+
+$$('#tabs button').forEach(button => {
+  button.onclick = () => {
+
+    $$('#tabs button').forEach(tab => {
+      tab.classList.remove('on');
+      tab.setAttribute('aria-selected', 'false');
+    });
+
+    $$('.tool').forEach(tool => {
+      tool.classList.remove('on');
+    });
+
+    button.classList.add('on');
+    button.setAttribute('aria-selected', 'true');
+
+    $('#t-' + button.dataset.t).classList.add('on');
+  };
+});
+
+
+/* Copy buttons */
+
+$$('[data-copy]').forEach(button => {
+  button.onclick = () => {
+    const target = $('#' + button.dataset.copy);
+
+    if (target) {
+      copy(target.textContent);
+    }
+  };
+});
+
+
+/* ================= JSON ================= */
+
+const show = (id, value, error = false) => {
+  const output = $('#' + id);
+
+  output.textContent = value;
+  output.classList.toggle('err', error);
+};
+
+const parseJSON = () => {
+  try {
+    return JSON.parse($('#jin').value);
+  } catch (error) {
+    show('jout', error.message, true);
+    return undefined;
+  }
+};
+
+$('#jf').onclick = () => {
+  const value = parseJSON();
+
+  if (value !== undefined) {
+    show(
+      'jout',
+      JSON.stringify(value, null, 2)
+    );
+  }
+};
+
+$('#jm').onclick = () => {
+  const value = parseJSON();
+
+  if (value !== undefined) {
+    show(
+      'jout',
+      JSON.stringify(value)
+    );
+  }
+};
+
+
+/* ================= BASE64 ================= */
+
+$('#be').onclick = () => {
+  try {
+    const bytes = new TextEncoder().encode(
+      $('#bin').value
+    );
+
+    let binary = '';
+
+    for (const byte of bytes) {
+      binary += String.fromCharCode(byte);
+    }
+
+    show(
+      'bout',
+      btoa(binary)
+    );
+  } catch {
+    show(
+      'bout',
+      'Unable to encode text.',
+      true
+    );
+  }
+};
+
+$('#bd').onclick = () => {
+  try {
+    const binary = atob(
+      $('#bin').value.trim()
+    );
+
+    const bytes = Uint8Array.from(
+      binary,
+      character => character.charCodeAt(0)
+    );
+
+    show(
+      'bout',
+      new TextDecoder().decode(bytes)
+    );
+  } catch {
+    show(
+      'bout',
+      'Invalid Base64.',
+      true
+    );
+  }
+};
+
+
+/* ================= UUID ================= */
+
+const uid = () => crypto.randomUUID();
+
+$('#ug').onclick = () => {
+  show('uout', uid());
+};
+
+$('#ug10').onclick = () => {
+  show(
+    'uout',
+    Array.from(
+      { length:10 },
+      uid
+    ).join('\n')
+  );
+};
+
+show('uout', uid());
+
+
+/* ================= COLOR ================= */
+
+function colorInfo(hex) {
+
+  if (!/^#[0-9a-f]{6}$/i.test(hex)) {
+    show(
+      'cout',
+      'Enter a valid #RRGGBB hex color.',
+      true
+    );
+
+    return;
+  }
+
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+
+  const R = r / 255;
+  const G = g / 255;
+  const B = b / 255;
+
+  const max = Math.max(R,G,B);
+  const min = Math.min(R,G,B);
+  const delta = max - min;
+
+  const lightness = (max + min) / 2;
+
+  const saturation = delta
+    ? delta / (1 - Math.abs(2 * lightness - 1))
+    : 0;
+
+  let hue = 0;
+
+  if (delta) {
+    if (max === R) {
+      hue = ((G - B) / delta) % 6;
+    } else if (max === G) {
+      hue = (B - R) / delta + 2;
+    } else {
+      hue = (R - G) / delta + 4;
+    }
+
+    hue = Math.round(
+      (hue * 60 + 360) % 360
+    );
+  }
+
+  show(
+    'cout',
+    `HEX  ${hex.toLowerCase()}
+RGB  rgb(${r}, ${g}, ${b})
+HSL  hsl(${hue}, ${Math.round(saturation * 100)}%, ${Math.round(lightness * 100)}%)`
+  );
+}
+
+$('#cp').oninput = event => {
+  $('#ch').value = event.target.value;
+  colorInfo(event.target.value);
+};
+
+$('#ch').oninput = event => {
+  colorInfo(event.target.value);
+
+  if (/^#[0-9a-f]{6}$/i.test(event.target.value)) {
+    $('#cp').value = event.target.value;
+  }
+};
+
+colorInfo('#5e6ad2');
+</script>
+
 </body>
 </html>
+```
